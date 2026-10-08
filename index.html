@@ -1,0 +1,1284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Cole Matthews, mechanical engineering student at Duke: internship work at ADAG Group and McLaren Applied, an engine lab misfire diagnosis, a CREST 3D-printing study and Formula SAE.">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Cole Matthews</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap">
+<script>
+(function () {
+  var r = document.documentElement, v = (location.hash || "").slice(1);
+  var views = ["home", "adag", "mclaren", "misfire", "crest", "fsae", "builds", "about", "resume"];
+  r.classList.add("js");
+  r.setAttribute("data-view", views.indexOf(v) > -1 ? v : "home");
+  try { var t = localStorage.getItem("cm.theme"); if (t === "light" || t === "dark") r.setAttribute("data-theme", t); } catch (e) {}
+})();
+</script>
+<style>
+/* Layout: a drafting-sheet portfolio. One 1120px column; the hero pairs a title block with a "Fig. 1" viewport of real hardware, and every project page sets a text column beside a ruled spec panel. */
+:root {
+  --paper: #f2f4f5;
+  --sheet: #ffffff;
+  --ink: #12181d;
+  --ink-2: #3a4650;
+  --muted: #5f6b74;
+  --rule: #d2d9de;
+  --grid: #e8edf0;
+  --bar: #9fabb4;
+  --accent: #e8510b;       /* international orange, the color of flight-test hardware */
+  --accent-ink: #b33a04;
+  --accent-wash: #fdeee5;
+  --scrim: rgba(13, 19, 23, .72);
+  --scrim-ink: #ffffff;
+  --scrim-line: rgba(255, 255, 255, .38);
+  --fig-dim: 1;
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "B612 Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d1317; --sheet: #141b20; --ink: #e6ebee; --ink-2: #b7c1c8; --muted: #8d9aa3;
+    --rule: #27323a; --grid: #1b242a; --bar: #4f5d67; --accent: #ff7a33; --accent-ink: #ff9a61; --accent-wash: #2a1b11;
+    --fig-dim: .86;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d1317; --sheet: #141b20; --ink: #e6ebee; --ink-2: #b7c1c8; --muted: #8d9aa3;
+  --rule: #27323a; --grid: #1b242a; --bar: #4f5d67; --accent: #ff7a33; --accent-ink: #ff9a61; --accent-wash: #2a1b11;
+  --fig-dim: .86;
+  color-scheme: dark;
+}
+
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 0 40px; }
+
+.js [data-view] { display: none; }
+html[data-view="home"] [data-view="home"], html[data-view="adag"] [data-view="adag"], html[data-view="mclaren"] [data-view="mclaren"],
+html[data-view="misfire"] [data-view="misfire"], html[data-view="crest"] [data-view="crest"], html[data-view="fsae"] [data-view="fsae"], html[data-view="builds"] [data-view="builds"],
+html[data-view="about"] [data-view="about"], html[data-view="resume"] [data-view="resume"] { display: block; }
+
+.mono, .eyebrow, .stamp, .kicker, dt, .back, .btn, .nav a, .chip, .todo-tag, .ph-view, .xp-date, .foot { font-family: var(--font-mono); }
+.eyebrow, .stamp, .kicker, dt, .back, .btn, .nav a, .chip, .todo-tag, .ph-view { text-transform: uppercase; letter-spacing: .08em; }
+
+/* Header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); display: flex; justify-content: space-between; align-items: center; gap: 8px 20px; flex-wrap: wrap; padding-block: 12px; border-bottom: 1px solid var(--rule); }
+.brand { text-decoration: none; display: grid; line-height: 1.15; }
+.brand-name { font-family: var(--font-display); font-weight: 750; font-stretch: 85%; font-size: 1.2rem; }
+.brand-sub { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.nav { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; }
+.nav a { font-size: .74rem; color: var(--ink-2); text-decoration: none; padding: 8px 10px; border-bottom: 2px solid transparent; }
+.nav a:hover { color: var(--ink); }
+.nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+.theme { margin-left: 6px; width: 34px; height: 34px; display: grid; place-items: center; background: none; border: 1px solid var(--rule); color: var(--ink); cursor: pointer; }
+.theme span { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(0, .78fr); grid-template-areas: "intro fig" "tb fig"; gap: 30px clamp(24px, 5vw, 64px); align-items: start; padding-block: clamp(32px, 6vw, 72px) 44px; }
+.hero-intro { grid-area: intro; min-width: 0; }
+.hero .tb { grid-area: tb; }
+.hero .vfig { grid-area: fig; justify-self: end; width: 100%; max-width: 420px; }
+.status { display: inline-flex; align-items: center; gap: 10px; font-size: .74rem; color: var(--ink-2); }
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-wash); flex: none; }
+.name { font-family: var(--font-display); font-weight: 800; font-stretch: 78%; font-size: clamp(3.1rem, 10vw, 6rem); line-height: .9; letter-spacing: -.01em; margin: 16px 0 20px; text-wrap: balance; }
+.lede { font-size: 1.2rem; line-height: 1.55; color: var(--ink-2); max-width: 34em; margin: 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.btn { display: inline-block; font-size: .74rem; padding: 11px 16px; border: 1.5px solid var(--ink); color: var(--ink); background: transparent; text-decoration: none; cursor: pointer; }
+.btn:hover { border-color: var(--accent); color: var(--accent-ink); }
+.btn-solid { background: var(--ink); color: var(--sheet); }
+.btn-solid:hover { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--sheet); }
+
+/* Fig. viewport: video with corner ticks, like a camera frame on a drawing */
+.vfig { margin: 0; min-width: 0; }
+.vbox { position: relative; aspect-ratio: 4 / 5; max-width: 100%; border: 1.5px solid var(--ink); background: var(--ink); }
+.vbox video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.vbox::before, .vbox::after { content: ""; position: absolute; width: 18px; height: 18px; border-color: var(--accent); border-style: solid; pointer-events: none; }
+.vbox::before { top: -7px; left: -7px; border-width: 2px 0 0 2px; }
+.vbox::after { bottom: -7px; right: -7px; border-width: 0 2px 2px 0; }
+.vctl { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: space-between; gap: 8px; }
+.vbtn { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; padding: 7px 10px; background: var(--scrim); color: var(--scrim-ink); border: 1px solid var(--scrim-line); cursor: pointer; }
+.vbtn:hover { border-color: var(--scrim-ink); }
+.vfig figcaption, .figcap { display: flex; gap: 10px; font-size: .88rem; line-height: 1.4; color: var(--muted); margin-top: 10px; }
+.fig-no { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); padding-top: .2em; white-space: nowrap; }
+
+/* Title block */
+.tb { margin: 0; border: 1.5px solid var(--ink); background: var(--sheet); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tb-head { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1.5px solid var(--ink); font-family: var(--font-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
+.tb > div:not(.tb-head) { padding: 10px 12px; border-bottom: 1px solid var(--rule); min-width: 0; }
+.tb > div:nth-child(2n):not(.wide) { border-right: 1px solid var(--rule); }
+.tb .wide { grid-column: 1 / -1; }
+.tb > div:last-child { border-bottom: 0; }
+dt { font-size: .64rem; color: var(--muted); }
+dd { margin: 3px 0 0; line-height: 1.35; overflow-wrap: anywhere; }
+.tb dd { font-size: .95rem; }
+.copyline { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.copy { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; background: none; border: 1px solid var(--rule); color: var(--ink-2); cursor: pointer; }
+.copy:hover { border-color: var(--accent); color: var(--accent-ink); }
+
+/* Sections */
+.section { padding-block: 40px; border-top: 1.5px solid var(--ink); scroll-margin-top: 70px; }
+.section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; margin-bottom: 20px; }
+h2 { font-family: var(--font-display); font-weight: 750; font-stretch: 85%; font-size: clamp(1.55rem, 3vw, 2.05rem); line-height: 1.1; margin: 0; text-wrap: balance; }
+.stamp { font-size: .7rem; color: var(--muted); }
+.sub { margin: 6px 0 0; color: var(--muted); font-size: .98rem; }
+
+.rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.rows > li { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 4px 20px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.rows .k { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: .25em; }
+.rows .t { font-weight: 700; display: block; }
+.rows .d { color: var(--ink-2); display: block; }
+
+/* Project cards */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1000px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.card { display: flex; flex-direction: column; background: var(--sheet); border: 1px solid var(--rule); text-decoration: none; overflow: hidden; transition: border-color .15s ease, transform .15s ease; }
+.card:hover { border-color: var(--ink); transform: translateY(-2px); }
+.plate { aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; border-bottom: 1px solid var(--rule); background: var(--sheet); }
+.plate img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.card:hover .plate img { transform: scale(1.03); }
+.plate svg { display: block; width: 100%; height: 100%; }
+.drawing { background-color: var(--sheet); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 20px 20px; background-position: -1px -1px; }
+.card-body { display: flex; flex-direction: column; gap: 12px; padding: 20px 22px 22px; flex: 1; }
+.kicker { font-size: .68rem; color: var(--muted); }
+.card h3 { font-family: var(--font-display); font-weight: 720; font-stretch: 88%; font-size: 1.5rem; line-height: 1.12; margin: 0; text-wrap: balance; }
+.card p { margin: 0; color: var(--ink-2); }
+.figs { list-style: none; margin: auto 0 0; padding: 12px 0 0; border-top: 1px dashed var(--rule); display: flex; flex-wrap: wrap; gap: 6px 16px; font-family: var(--font-mono); font-size: .78rem; color: var(--ink-2); }
+.figs b { color: var(--ink); }
+.more { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); }
+.queue { display: flex; flex-direction: column; gap: 12px; padding: 22px; border: 1.5px dashed var(--ink-2); text-decoration: none; }
+.queue:hover { border-color: var(--accent); }
+.queue strong { font-family: var(--font-display); font-weight: 720; font-stretch: 88%; font-size: 1.5rem; line-height: 1.12; display: block; margin-bottom: 12px; }
+.queue .more { margin-top: auto; }
+.queue span.q { color: var(--ink-2); }
+.queue ol { margin: 0; padding-left: 1.2em; color: var(--ink-2); font-size: .95rem; }
+.queue ol li { margin: 3px 0; }
+.queue ol li::marker { font-family: var(--font-mono); font-size: .75rem; color: var(--accent-ink); }
+
+/* Line drawings (SVG) */
+.d-ln, .d-box, .d-arrow { fill: none; stroke: var(--ink-2); stroke-width: 1.5; }
+.d-thin { fill: none; stroke: var(--rule); stroke-width: 1; }
+.d-coil { stroke: var(--accent); stroke-width: 1.5; }
+.d-fin { stroke: var(--accent); stroke-width: 1; }
+.d-pipe { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+.d-head { fill: var(--ink-2); }
+.d-t { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; fill: var(--muted); }
+.d-big { font-family: var(--font-display); font-weight: 800; font-stretch: 80%; font-size: 52px; fill: var(--ink); }
+.d-pins { fill: none; stroke: var(--ink-2); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0 7; }
+.d-fill { fill: var(--sheet); }
+
+/* Skills */
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chips li { font-size: .93rem; line-height: 1.3; padding: 4px 9px; border: 1px solid var(--rule); background: var(--sheet); }
+
+/* Experience list */
+.xp { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.xp li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.xp-org { font-weight: 700; }
+.xp-role { color: var(--ink-2); grid-column: 1; }
+.xp-date { font-size: .78rem; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; grid-row: 1; grid-column: 2; padding-top: .2em; }
+.textlink { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); text-decoration: none; border-bottom: 1px solid currentColor; }
+
+/* Project pages */
+.phead { padding-block: 30px 22px; }
+.back { font-size: .72rem; color: var(--ink-2); text-decoration: none; }
+.back:hover { color: var(--accent-ink); }
+.eyebrow { font-size: .7rem; color: var(--muted); margin: 22px 0 0; }
+.ptitle { font-family: var(--font-display); font-weight: 800; font-stretch: 80%; font-size: clamp(2.3rem, 6.5vw, 4rem); line-height: .96; margin: 10px 0 16px; text-wrap: balance; }
+.strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 0 34px; border: 1.5px solid var(--ink); background: var(--sheet); }
+.strip > div { padding: 10px 12px; border-right: 1px solid var(--rule); min-width: 0; }
+.strip > div:last-child { border-right: 0; }
+.strip dd { font-size: .95rem; }
+.pbody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 19rem); gap: clamp(24px, 5vw, 60px); align-items: start; }
+.prose { max-width: 68ch; min-width: 0; }
+.prose h2 { font-size: 1.35rem; margin: 34px 0 10px; }
+.prose > h2:first-child { margin-top: 0; }
+.prose p { margin: 0 0 12px; }
+.prose ul { margin: 0 0 12px; padding-left: 1.1em; }
+.prose li { margin: 7px 0; }
+.prose li::marker { color: var(--accent); }
+.specs { margin: 0; border: 1.5px solid var(--ink); background: var(--sheet); position: sticky; top: 84px; }
+.specs-title { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; padding: 8px 14px; border-bottom: 1.5px solid var(--ink); }
+.specs > div:not(.specs-title) { padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+.specs > div:last-child { border-bottom: 0; }
+.specs dd { font-size: .95rem; }
+.chip { display: inline-block; font-size: .64rem; padding: 2px 8px; border: 1px solid var(--ink-2); color: var(--ink-2); line-height: 1.6; }
+.chip-done { border-color: var(--ink); color: var(--ink); }
+.chip-live { border-color: var(--accent-ink); color: var(--accent-ink); }
+.chip-plan { border-style: dashed; border-color: var(--accent-ink); color: var(--accent-ink); }
+.todo { margin: 14px 0; padding: 12px 14px; border: 1.5px dashed var(--accent); background: var(--accent-wash); }
+.todo-tag { font-size: .64rem; font-weight: 700; color: var(--accent-ink); margin-right: 8px; }
+.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 8px; }
+.ph { margin: 0; min-width: 0; }
+.ph-box { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border: 1px solid var(--rule); background-color: var(--sheet);
+  background-image: linear-gradient(var(--rule), var(--rule)), linear-gradient(var(--rule), var(--rule));
+  background-size: 1px 36px, 36px 1px; background-position: center; background-repeat: no-repeat; }
+.ph-view { position: absolute; top: 8px; left: 10px; font-size: .62rem; color: var(--muted); }
+.ph figcaption { font-size: .88rem; color: var(--muted); margin-top: 6px; }
+.ph img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--rule); background: var(--sheet); }
+.feature { margin: 0 0 28px; }
+.feature img { display: block; width: 100%; height: auto; max-height: 520px; object-fit: contain; border: 1px solid var(--rule); background: var(--sheet); }
+.feature figcaption { font-size: .88rem; color: var(--muted); margin-top: 6px; }
+.feature.cover img { object-fit: cover; aspect-ratio: 4 / 3; max-height: none; }
+.feature .plate { aspect-ratio: 16 / 10; border: 1px solid var(--rule); max-width: 560px; }
+.pnext { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 44px; padding-top: 18px; border-top: 1.5px solid var(--ink); }
+
+/* Report figures and charts on the engine-lab page */
+.rfig { margin: 0; min-width: 0; }
+.rfig img { display: block; width: 100%; height: auto; max-width: 100%; border: 1px solid var(--rule); filter: brightness(var(--fig-dim)); }
+.rfig figcaption { font-size: .86rem; line-height: 1.4; color: var(--muted); margin-top: 6px; }
+.fig2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 8px 0 18px; }
+.cmp { border: 1.5px solid var(--ink); background: var(--sheet); margin: 16px 0 8px; }
+.cmp-title { display: flex; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding: 8px 14px; border-bottom: 1.5px solid var(--ink); font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; }
+.cmp-title span + span { color: var(--muted); }
+.cmp-rows { display: grid; gap: 16px; padding: 14px; }
+.cmp-row { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 6px 14px; align-items: center; }
+.cmp-k { font-weight: 600; line-height: 1.25; }
+.cmp-bars { display: grid; gap: 6px; min-width: 0; }
+.cmp-bar { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: .74rem; color: var(--ink-2); font-variant-numeric: tabular-nums; min-width: 0; }
+.cmp-bar i { display: block; height: 12px; width: calc(var(--w) * .68); flex: none; }
+.cmp-bar.ideal i { border: 1.5px solid var(--ink-2); }
+.cmp-bar.meas i { background: var(--accent); }
+.cmp-bar.meas b { color: var(--accent-ink); font-weight: 700; }
+.cmp-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 0 14px 12px; font-family: var(--font-mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.cmp-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.cmp-legend i { display: inline-block; width: 14px; height: 10px; }
+.cmp-legend .lg-ideal { border: 1.5px solid var(--ink-2); }
+.cmp-legend .lg-meas { background: var(--accent); }
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 0 0 16px; display: grid; gap: 10px; }
+.prose .steps > li { counter-increment: step; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 12px; margin: 0; }
+.steps > li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: .72rem; color: var(--accent-ink); padding-top: .32em; }
+.tests { list-style: none; margin: 4px 0 14px; padding: 0; border-top: 1px solid var(--rule); }
+.prose .tests > li { display: grid; grid-template-columns: minmax(0, 16rem) minmax(0, 1fr); gap: 14px 22px; padding: 18px 0; margin: 0; border-bottom: 1px solid var(--rule); }
+.tests h3 { font-family: var(--font-display); font-weight: 720; font-stretch: 88%; font-size: 1.25rem; line-height: 1.15; margin: 0 0 6px; }
+.tests p { margin: 0; }
+.result { display: inline-block; margin-top: 10px; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .04em; padding: 3px 8px; border: 1px solid var(--accent-ink); color: var(--accent-ink); }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 13rem); gap: 18px 24px; align-items: start; }
+.split .rfig img { background: var(--sheet); }
+
+/* CREST results explorer */
+.explorer { border: 1.5px solid var(--ink); background: var(--sheet); margin: 14px 0 10px; }
+.ex-head { display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; padding: 8px 14px; border-bottom: 1.5px solid var(--ink); font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; }
+.ex-head span + span { color: var(--muted); }
+.ex-controls { display: grid; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--rule); }
+.seg-group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.seg-label { font-family: var(--font-mono); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); width: 4.6rem; flex: none; }
+.seg { font-family: var(--font-body); font-size: .9rem; line-height: 1.2; padding: 6px 10px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink-2); cursor: pointer; }
+.seg:hover { border-color: var(--ink-2); color: var(--ink); }
+.seg[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--sheet); }
+.switch { display: inline-flex; align-items: center; gap: 8px; margin-left: 6px; font-size: .9rem; color: var(--ink-2); cursor: pointer; }
+.switch input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+.ex-chart { padding: 8px 4px 0; min-height: 240px; }
+.ex-chart svg { display: block; width: 100%; height: auto; }
+.ex-note { margin: 0; padding: 10px 14px 14px; border-top: 1px dashed var(--rule); color: var(--ink-2); }
+.c-grid { stroke: var(--rule); stroke-width: 1; }
+.c-axis { stroke: var(--ink-2); stroke-width: 1.2; }
+.c-bar { fill: var(--bar); }
+.c-bar.best { fill: var(--accent); }
+.c-val { font-family: var(--font-mono); font-size: 11px; fill: var(--ink); }
+.c-tick { font-family: var(--font-mono); font-size: 10px; fill: var(--muted); }
+.c-cat { font-family: var(--font-body); font-size: 12.5px; fill: var(--ink-2); }
+.c-mass { font-family: var(--font-mono); font-size: 10px; fill: var(--muted); }
+.c-ytitle { font-family: var(--font-mono); font-size: 10px; letter-spacing: .06em; fill: var(--muted); }
+
+/* Build queue */
+.builds { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.build { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 15rem); gap: 10px 32px; padding: 22px; background: var(--sheet); border: 1px solid var(--rule); }
+.build h3 { font-family: var(--font-display); font-weight: 720; font-stretch: 88%; font-size: 1.4rem; line-height: 1.15; margin: 8px 0 8px; }
+.build p { margin: 0; color: var(--ink-2); }
+.build dl { margin: 0; align-self: start; border-left: 1px solid var(--rule); padding-left: 16px; }
+.build dl div + div { margin-top: 10px; }
+.build dd { font-size: .93rem; }
+
+/* Resume */
+.cv h2 { font-size: 1.3rem; margin: 30px 0 4px; }
+.cv-entry { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.cv-line { display: flex; justify-content: space-between; gap: 4px 16px; flex-wrap: wrap; }
+.cv-line .xp-date { padding-top: 0; }
+.cv-entry ul { margin: 6px 0 0; padding-left: 1.1em; }
+.cv-entry li { margin: 4px 0; }
+.cv-entry li::marker { color: var(--accent); }
+.cv-role { color: var(--ink-2); font-style: italic; }
+
+.about p { max-width: 64ch; margin: 0 0 14px; font-size: 1.1rem; }
+
+.foot { display: flex; justify-content: space-between; gap: 8px 20px; flex-wrap: wrap; padding-top: 18px; border-top: 1.5px solid var(--ink); font-size: .72rem; letter-spacing: .06em; color: var(--muted); }
+
+@media (max-width: 880px) {
+  .hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "fig" "tb"; }
+  .hero .vfig { justify-self: start; max-width: 440px; }
+  .pbody { grid-template-columns: minmax(0, 1fr); }
+  .specs { position: static; }
+}
+@media (max-width: 720px) {
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .strip > div:nth-child(2n) { border-right: 0; }
+  .strip > div:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .rows > li { grid-template-columns: minmax(0, 1fr); }
+  .build { grid-template-columns: minmax(0, 1fr); }
+  .build dl { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 12px; }
+  .gallery, .fig2 { grid-template-columns: minmax(0, 1fr); }
+  .prose .tests > li { grid-template-columns: minmax(0, 1fr); }
+  .split { grid-template-columns: minmax(0, 1fr); }
+  .split .rfig { max-width: 15rem; }
+  .cmp-row { grid-template-columns: minmax(0, 1fr); }
+  .seg-label { width: 100%; }
+}
+@media (max-width: 420px) {
+  .tb { grid-template-columns: minmax(0, 1fr); }
+  .tb > div:nth-child(2n):not(.wide) { border-right: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card, .card:hover, .plate img, .card:hover .plate img { transition: none; transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#home">
+      <span class="brand-name">Cole Matthews</span>
+      <span class="brand-sub">Mechanical engineering · Duke ’28</span>
+    </a>
+    <nav class="nav" aria-label="Site">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#projects" data-nav="projects">Projects</a>
+      <a href="#about" data-nav="about">About</a>
+      <a href="#resume" data-nav="resume">Resume</a>
+      <button type="button" class="theme" id="theme-toggle" aria-label="Switch between light and dark"><span></span></button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ HOME ============ -->
+    <section data-view="home">
+      <div class="hero">
+        <div class="hero-intro">
+          <p class="status mono" style="margin:0">Looking for a Summer 2027 internship</p>
+          <h1 class="name">Cole Matthews</h1>
+          <p class="lede">Mechanical engineering student at Duke, with an aerospace certificate. I’ve built CFD models for a 160&nbsp;MW AI data-center campus at ADAG Group and written ECU test cases for Formula&nbsp;1 at McLaren Applied. Next summer I want hardware work in aerospace, propulsion, thermal systems or test.</p>
+          <div class="actions">
+            <a class="btn btn-solid" href="#projects">See projects</a>
+            <a class="btn" href="#resume">Resume</a>
+          </div>
+        </div>
+        <figure class="vfig">
+          <div class="vbox">
+            <video id="v-hero" data-loop poster="media/engine-run-poster.jpg" muted loop playsinline preload="metadata" width="720" height="900" aria-label="Duke Motorsports car on jack stands with its engine running"><source src="media/engine-run.mp4" type="video/mp4"><source src="media/engine-run.webm" type="video/webm"></video>
+            <div class="vctl">
+              <button type="button" class="vbtn" data-play="v-hero" aria-pressed="true"><span class="lbl">Pause</span></button>
+              <button type="button" class="vbtn" data-sound="v-hero" aria-pressed="false"><span class="lbl">Sound on</span></button>
+            </div>
+          </div>
+          <figcaption><span class="fig-no">Fig. 1</span><span>Duke Motorsports car on stands with the engine running, April 2025. I’m on the powertrain sub-team.</span></figcaption>
+        </figure>
+        <dl class="tb">
+          <div class="tb-head"><span>Cole Matthews</span><span>Rev. 8 Oct 2026</span></div>
+          <div><dt>Degree</dt><dd>B.S.E. Mechanical Engineering</dd></div>
+          <div><dt>Certificate</dt><dd>Aerospace Engineering</dd></div>
+          <div><dt>University</dt><dd>Duke, Class of 2028</dd></div>
+          <div><dt>This term</dt><dd>UNSW Sydney, to Dec 2026</dd></div>
+          <div class="wide"><dt>Work authorization</dt><dd>British and Canadian citizen. CPT for internships, no sponsorship needed.</dd></div>
+          <div class="wide"><dt>Email</dt><dd class="copyline"><span id="email-hero">Cole.Matthews@duke.edu</span><button type="button" class="copy" data-copy="Cole.Matthews@duke.edu" aria-controls="email-hero">Copy</button></dd></div>
+          <!-- Add your LinkedIn here once the handle is set, e.g. <div class="wide"><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/HANDLE">linkedin.com/in/HANDLE</a></dd></div> -->
+        </dl>
+      </div>
+
+      <div class="section" id="now">
+        <div class="section-head">
+          <h2>What I’m up to right now</h2>
+          <span class="stamp">Updated 8 Oct 2026</span>
+        </div>
+        <ul class="rows">
+          <li><span class="k">Studying</span><span>Semester abroad at UNSW Sydney, until December.</span></li>
+          <li><span class="k">Applying</span><span>Summer 2027 internships in aerospace, propulsion, thermal systems and hardware test.</span></li>
+          <li><span class="k">Starting</span><span>The CSWA SolidWorks certification, with a strain-gauge beam to check against FEA.</span></li>
+          <li><span class="k">January</span><span>Back at Duke for Controls and the Duke Motorsports season.</span></li>
+        </ul>
+      </div>
+
+      <div class="section" id="projects">
+        <div class="section-head">
+          <div>
+            <h2>Projects</h2>
+            <p class="sub">Work from internships, coursework and Formula SAE. Planned builds are kept separate.</p>
+          </div>
+        </div>
+        <div class="cards">
+          <a class="card" href="#adag">
+            <div class="plate drawing">
+              <svg viewBox="0 0 400 250" role="img" aria-label="Schematic of a server rack with a rear-door heat exchanger">
+                <defs><pattern id="fins-a" width="16" height="6" patternUnits="userSpaceOnUse"><line class="d-fin" x1="0" y1="3" x2="16" y2="3"/></pattern></defs>
+                <line class="d-ln" x1="24" y1="212" x2="376" y2="212"/>
+                <rect class="d-box d-fill" x="148" y="44" width="86" height="168"/>
+                <path class="d-thin" d="M154 58H228M154 72H228M154 86H228M154 100H228M154 114H228M154 128H228M154 142H228M154 156H228M154 170H228M154 184H228M154 198H228"/>
+                <rect class="d-coil" x="238" y="44" width="16" height="168" fill="url(#fins-a)"/>
+                <path class="d-pipe" d="M243 44V24H300M249 44V31H300"/>
+                <path class="d-arrow" d="M44 74H134M44 112H134M44 150H134M44 188H134M262 74H342M262 112H342M262 150H342M262 188H342"/>
+                <path class="d-head" d="M140 74l-8-4v8zM140 112l-8-4v8zM140 150l-8-4v8zM140 188l-8-4v8zM348 74l-8-4v8zM348 112l-8-4v8zM348 150l-8-4v8zM348 188l-8-4v8z"/>
+                <text class="d-t" x="44" y="58">COLD AISLE</text>
+                <text class="d-t" x="191" y="36" text-anchor="middle">RACK ~50 kW</text>
+                <text class="d-t" x="304" y="34">COOLANT</text>
+                <text class="d-t" x="348" y="58" text-anchor="end">RETURN AIR</text>
+                <text class="d-t" x="246" y="234" text-anchor="middle">REAR-DOOR COIL</text>
+              </svg>
+            </div>
+            <div class="card-body">
+              <span class="kicker">Internship · ADAG Group · 2026</span>
+              <h3>Data-center cooling CFD</h3>
+              <p>Thermal and airflow models for a 160&nbsp;MW AI data-center campus, and a fidelity study to find the cheapest model that still matched the detailed one.</p>
+              <ul class="figs"><li><b>160</b> MW campus</li><li><b>600</b> kW unit</li><li><b>±5</b>% tolerance</li><li><b>~50</b> kW/rack</li></ul>
+              <span class="more">Read more</span>
+            </div>
+          </a>
+          <a class="card" href="#mclaren">
+            <div class="plate drawing">
+              <svg viewBox="0 0 400 250" role="img" aria-label="Line drawing of an engine control unit labeled TAG-700">
+                <text class="d-t" x="78" y="34">STANDARD ECU · ALL 2026 F1 CARS</text>
+                <circle class="d-ln" cx="62" cy="72" r="7"/><circle class="d-ln" cx="338" cy="72" r="7"/><circle class="d-ln" cx="62" cy="164" r="7"/><circle class="d-ln" cx="338" cy="164" r="7"/>
+                <path class="d-ln" d="M69 66H78M69 78H78M322 66H331M322 78H331M69 158H78M69 170H78M322 158H331M322 170H331"/>
+                <rect class="d-box d-fill" x="78" y="50" width="244" height="136" rx="10"/>
+                <rect class="d-box d-fill" x="112" y="186" width="76" height="28" rx="3"/>
+                <rect class="d-box d-fill" x="212" y="186" width="76" height="28" rx="3"/>
+                <path class="d-pins" d="M121 196H181M121 205H181M221 196H281M221 205H281"/>
+                <text class="d-big" x="200" y="132" text-anchor="middle">TAG-700</text>
+                <text class="d-t" x="200" y="158" text-anchor="middle">ENGINE CONTROL UNIT</text>
+              </svg>
+            </div>
+            <div class="card-body">
+              <span class="kicker">Internship · McLaren Applied · 2025</span>
+              <h3>Formula&nbsp;1 ECU validation</h3>
+              <p>Validation workflows and test cases for the TAG-700, the standard ECU on every 2026 Formula&nbsp;1 car, plus work on a trackside diagnostics rig.</p>
+              <ul class="figs"><li><b>TAG-700</b> ECU</li><li><b>12+</b> test cases</li><li><b>Sole</b> intern</li></ul>
+              <span class="more">Read more</span>
+            </div>
+          </a>
+          <a class="card" href="#misfire">
+            <div class="plate"><img src="img/me331-rig.jpg" alt="The lab engine rig: a small single-cylinder engine belted to an alternator" loading="lazy" width="1400" height="1050"></div>
+            <div class="card-body">
+              <span class="kicker">Coursework · Duke engine lab · 2026</span>
+              <h3>Engine misfire diagnosis</h3>
+              <p>Python processing of in-cylinder pressure data, three tests that traced a flat PV loop to misfiring combustion, and a redesign of the lab rig.</p>
+              <ul class="figs"><li><b>0/12</b> burns passed</li><li><b>3</b> tests</li><li><b>Python</b></li></ul>
+              <span class="more">Read more</span>
+            </div>
+          </a>
+          <a class="card" href="#crest">
+            <div class="plate"><img src="img/crest-infill.jpg" alt="Four printed samples cut open to show different infill patterns" loading="lazy" width="1100" height="1100"></div>
+            <div class="card-body">
+              <span class="kicker">CREST Gold Award · 2023–24</span>
+              <h3>Optimizing 3D printing for space</h3>
+              <p>With a partner, tested 30 print settings for strength per gram, on rigs we built ourselves, including a hand-made Charpy impact tester.</p>
+              <ul class="figs"><li><b>30</b> settings</li><li><b>3</b> load tests</li><li><b>90+</b> hours</li></ul>
+              <span class="more">Read more</span>
+            </div>
+          </a>
+          <a class="card" href="#fsae">
+            <div class="plate"><img src="img/fsae-car.jpg" alt="Duke Motorsports Formula SAE car, number 34, in the team garage" loading="lazy" width="1200" height="900" style="object-position:50% 60%"></div>
+            <div class="card-body">
+              <span class="kicker">Team · Duke Motorsports · 2024 to now</span>
+              <h3>Formula SAE powertrain</h3>
+              <p>Engine calibration, drivetrain setup, and fitting the powertrain together with the chassis and electrical sub-teams.</p>
+              <ul class="figs"><li><b>Powertrain</b> sub-team</li><li><b>Car</b> #34</li></ul>
+              <span class="more">Read more</span>
+            </div>
+          </a>
+          <a class="queue" href="#builds">
+            <span class="kicker">Planned work · Oct 2026 to spring 2027</span>
+            <span><strong>Build queue</strong><span class="q">Five builds I’m planning. Most test a prediction against a measurement.</span></span>
+            <ol>
+              <li>Rack-in-a-box cooling rig</li>
+              <li>Strain-gauge beam against FEA</li>
+              <li>Servo gripper with force sensing</li>
+              <li>Propeller thrust stand</li>
+              <li>Formula SAE part, drawn and inspected</li>
+            </ol>
+            <span class="more">See the queue</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="section" id="skills">
+        <div class="section-head"><h2>Skills</h2></div>
+        <ul class="rows">
+          <li><span class="k">Simulation</span><ul class="chips"><li>CFD (Cadence Reality DC, formerly 6SigmaDCX)</li><li>Thermal and airflow modeling</li><li>Engine cycle analysis (Brayton, dual cycle)</li><li>PV-loop and misfire analysis</li></ul></li>
+          <li><span class="k">CAD &amp; making</span><ul class="chips"><li>SolidWorks</li><li>Onshape</li><li>FDM 3D printing</li></ul></li>
+          <li><span class="k">Electronics &amp; test</span><ul class="chips"><li>ECU validation</li><li>Test-case design</li><li>CAN bus (PEAK PCAN)</li><li>ATLAS telemetry</li><li>System Monitor</li><li>DAQ instrumentation</li><li>Op-amp filter design</li><li>Lambda sensor calibration</li><li>Materials testing (bend, impact, torsion)</li></ul></li>
+          <li><span class="k">Code</span><ul class="chips"><li>Python (signal processing, data analysis)</li><li>MATLAB</li></ul></li>
+          <li><span class="k">Aviation</span><ul class="chips"><li>Private pilot’s license in training</li><li>UK CAA drone license</li></ul></li>
+        </ul>
+      </div>
+
+      <div class="section" id="experience">
+        <div class="section-head"><h2>Experience</h2><a class="textlink" href="#resume">Full resume</a></div>
+        <ul class="xp">
+          <li><span class="xp-org">ADAG Group, Montreal</span><span class="xp-date">Jun–Jul 2026</span><span class="xp-role">CFD &amp; Design Intern</span></li>
+          <li><span class="xp-org">McLaren Applied (now Motion Applied), Woking</span><span class="xp-date">May–Jul 2025</span><span class="xp-role">Motorsport Intern, Systems Engineering</span></li>
+          <li><span class="xp-org">Duke Motorsports (Formula SAE), Durham</span><span class="xp-date">Sep 2024–now</span><span class="xp-role">Powertrain Engineer</span></li>
+          <li><span class="xp-org">BAE Systems Submarines, Barrow-in-Furness</span><span class="xp-date">Oct 2023</span><span class="xp-role">Engineering Intern</span></li>
+        </ul>
+      </div>
+
+      <div class="section" id="other">
+        <div class="section-head"><h2>Other things I’ve done</h2></div>
+        <ul class="rows">
+          <li><span class="k">2022 to now</span><span><span class="t">Simplexity, founder</span><span class="d">A student wellbeing platform used by two London schools. It won £10,000 in the Transform Your Society competition. I built the website and surveyed more than 300 students to decide what it should do.</span></span></li>
+          <li><span class="k">Jul 2022</span><span><span class="t">Explo Summer, AI and machine learning, Boston</span><span class="d">A three-week course with MIT and McGill instructors. We built convolutional neural networks to classify images, and our team’s model scored the highest accuracy on the final project.</span></span></li>
+          <li><span class="k">Dec 2021</span><span><span class="t">MIT Introduction to Aerospace (online)</span><span class="d">An eight-week MIT Open Learning Library course covering rocketry, orbital mechanics, life support and spacewalks.</span></span></li>
+          <li><span class="k">2023</span><span><span class="t">House Captain, City of London School</span><span class="d">Chosen by staff to run house events and assemblies and to mentor younger students.</span></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ ADAG ============ -->
+    <section data-view="adag">
+      <div class="phead">
+        <a class="back" href="#projects">← All projects</a>
+        <p class="eyebrow">Internship · ADAG Group, Montreal · Jun–Jul 2026</p>
+        <h1 class="ptitle">Data-center cooling CFD</h1>
+        <p class="lede">Cooling design for a 160&nbsp;MW AI data-center campus at a Montreal engineering consultancy, reporting to the Director of Technical Excellence.</p>
+      </div>
+      <dl class="strip">
+        <div><dt>Status</dt><dd><span class="chip chip-done">Completed</span></dd></div>
+        <div><dt>Role</dt><dd>CFD &amp; Design Intern</dd></div>
+        <div><dt>Software</dt><dd>Cadence Reality DC</dd></div>
+        <div><dt>Dates</dt><dd>Jun–Jul 2026</dd></div>
+      </dl>
+      <div class="pbody">
+        <div class="prose">
+          <figure class="feature">
+            <div class="plate drawing">
+              <svg viewBox="0 0 400 250" role="img" aria-label="Schematic of a server rack with a rear-door heat exchanger">
+                <defs><pattern id="fins-b" width="16" height="6" patternUnits="userSpaceOnUse"><line class="d-fin" x1="0" y1="3" x2="16" y2="3"/></pattern></defs>
+                <line class="d-ln" x1="24" y1="212" x2="376" y2="212"/>
+                <rect class="d-box d-fill" x="148" y="44" width="86" height="168"/>
+                <path class="d-thin" d="M154 58H228M154 72H228M154 86H228M154 100H228M154 114H228M154 128H228M154 142H228M154 156H228M154 170H228M154 184H228M154 198H228"/>
+                <rect class="d-coil" x="238" y="44" width="16" height="168" fill="url(#fins-b)"/>
+                <path class="d-pipe" d="M243 44V24H300M249 44V31H300"/>
+                <path class="d-arrow" d="M44 74H134M44 112H134M44 150H134M44 188H134M262 74H342M262 112H342M262 150H342M262 188H342"/>
+                <path class="d-head" d="M140 74l-8-4v8zM140 112l-8-4v8zM140 150l-8-4v8zM140 188l-8-4v8zM348 74l-8-4v8zM348 112l-8-4v8zM348 150l-8-4v8zM348 188l-8-4v8z"/>
+                <text class="d-t" x="44" y="58">COLD AISLE</text>
+                <text class="d-t" x="191" y="36" text-anchor="middle">RACK ~50 kW</text>
+                <text class="d-t" x="304" y="34">COOLANT</text>
+                <text class="d-t" x="348" y="58" text-anchor="end">RETURN AIR</text>
+                <text class="d-t" x="246" y="234" text-anchor="middle">REAR-DOOR COIL</text>
+              </svg>
+            </div>
+            <figcaption>How a rear-door heat exchanger works: hot exhaust from the servers passes through a liquid-cooled coil in the rack’s back door. A generic schematic, not drawn from the project.</figcaption>
+          </figure>
+          <h2>The problem</h2>
+          <p>GPU racks put out far more heat than the servers most data halls were designed around, so the cooling has to be modeled before anything is built. Full-detail CFD of a whole campus is slow to set up and solve, so the useful question is how much detail each model actually needs.</p>
+          <h2>What I did</h2>
+          <ul>
+            <li>Learned Cadence Reality DC from scratch, then built and solved full thermal and airflow models of the campus.</li>
+            <li>Ran a three-tier fidelity study on a 600&nbsp;kW cooling unit, modeling it at three levels of detail and comparing each with the high-fidelity result.</li>
+            <li>Set ±5% tolerances and picked the lowest-cost model that stayed inside them.</li>
+            <li>Modeled a rear-door heat exchanger for GPU racks at about 50&nbsp;kW per rack.</li>
+          </ul>
+          <h2>Trade-offs</h2>
+          <p><strong>Detail against cost.</strong> A simpler model is only worth using if it gives the same answer as the detailed one, within a set tolerance.</p>
+          <p><strong>Heat rejection against pressure drop.</strong> A denser rear-door coil removes more heat, but it adds air-side pressure drop that the server fans have to overcome.</p>
+          <h2>Result</h2>
+          <p class="todo"><span class="todo-tag">To add</span>What the cheaper model saved, in setup time or solve time.</p>
+          <h2>Gallery</h2>
+          <div class="gallery">
+            <figure class="ph"><div class="ph-box" role="img" aria-label="Image placeholder"><span class="ph-view">View A</span></div><figcaption>Model view, only if ADAG approves.</figcaption></figure>
+            <figure class="ph"><div class="ph-box" role="img" aria-label="Image placeholder"><span class="ph-view">View B</span></div><figcaption>Fidelity comparison: three tiers against the ±5% band.</figcaption></figure>
+          </div>
+        </div>
+        <dl class="specs">
+          <div class="specs-title">Specifications</div>
+          <div><dt>Campus</dt><dd>160 MW AI data center</dd></div>
+          <div><dt>Cooling unit studied</dt><dd>600 kW</dd></div>
+          <div><dt>Fidelity tiers</dt><dd>3</dd></div>
+          <div><dt>Tolerance</dt><dd>±5%</dd></div>
+          <div><dt>Rack density modeled</dt><dd>~50 kW per rack</dd></div>
+          <div><dt>Software</dt><dd>Cadence Reality DC (formerly 6SigmaDCX)</dd></div>
+        </dl>
+      </div>
+      <nav class="pnext" aria-label="Project navigation"><a class="textlink" href="#projects">All projects</a><a class="textlink" href="#mclaren">Next: Formula 1 ECU validation</a></nav>
+    </section>
+
+    <!-- ============ McLAREN ============ -->
+    <section data-view="mclaren">
+      <div class="phead">
+        <a class="back" href="#projects">← All projects</a>
+        <p class="eyebrow">Internship · McLaren Applied (now Motion Applied), Woking · May–Jul 2025</p>
+        <h1 class="ptitle">Formula&nbsp;1 ECU validation</h1>
+        <p class="lede">Validation work on the TAG-700, the standard engine control unit on every 2026 Formula&nbsp;1 car. I was the firm’s sole intern.</p>
+      </div>
+      <dl class="strip">
+        <div><dt>Status</dt><dd><span class="chip chip-done">Completed</span></dd></div>
+        <div><dt>Role</dt><dd>Motorsport Intern, Systems Engineering</dd></div>
+        <div><dt>Hardware</dt><dd>TAG-700, PCU-700</dd></div>
+        <div><dt>Dates</dt><dd>May–Jul 2025</dd></div>
+      </dl>
+      <div class="pbody">
+        <div class="prose">
+          <h2>Context</h2>
+          <p>Motion Applied describes the TAG-700 as managing internal combustion, MGU-K, chassis and driver functions on all 2026 Formula&nbsp;1 cars. It also runs in leading WEC hypercar programs.</p>
+          <h2>What I did</h2>
+          <ul>
+            <li>Built ECU validation workflows for the TAG-700 and calibrated lambda sensors on a Bosch emulator.</li>
+            <li>Wrote 12+ test cases for the TAG-700 and PCU-700 across several vehicle programs, covering fault detection, UI, voltage and timekeeping.</li>
+            <li>Configured high-frequency telemetry in ATLAS for performance diagnostics.</li>
+            <li>Helped build an early version of Human-in-the-Loop, a briefcase-sized trackside rig for diagnosing ECUs, using PEAK PCAN, System Monitor and Control Panel.</li>
+          </ul>
+          <h2>Gallery</h2>
+          <div class="gallery">
+            <figure class="ph"><div class="ph-box" role="img" aria-label="Image placeholder"><span class="ph-view">View A</span></div><figcaption>Public material only, such as a product shot of the TAG-700.</figcaption></figure>
+            <figure class="ph"><div class="ph-box" role="img" aria-label="Image placeholder"><span class="ph-view">View B</span></div><figcaption>Anything Tim Rea clears for showing.</figcaption></figure>
+          </div>
+        </div>
+        <dl class="specs">
+          <div class="specs-title">Specifications</div>
+          <div><dt>ECU</dt><dd>TAG-700</dd></div>
+          <div><dt>Also tested</dt><dd>PCU-700</dd></div>
+          <div><dt>Test cases written</dt><dd>12+</dd></div>
+          <div><dt>Test areas</dt><dd>Fault detection, UI, voltage, timekeeping</dd></div>
+          <div><dt>Tools</dt><dd>ATLAS, PEAK PCAN, System Monitor, Control Panel, Bosch emulator</dd></div>
+        </dl>
+      </div>
+      <nav class="pnext" aria-label="Project navigation"><a class="textlink" href="#adag">Previous: Data-center cooling CFD</a><a class="textlink" href="#misfire">Next: Engine misfire diagnosis</a></nav>
+    </section>
+
+    <!-- ============ MISFIRE ============ -->
+    <section data-view="misfire">
+      <div class="phead">
+        <a class="back" href="#projects">← All projects</a>
+        <p class="eyebrow">Coursework · ME 331 engine lab, team of three · Spring 2026</p>
+        <h1 class="ptitle">Engine misfire diagnosis</h1>
+        <p class="lede">Duke’s thermodynamics lab runs a small single-cylinder engine so students can compare a measured PV loop with the ideal Otto cycle. Ours came out flat. I wrote the Python processing and ran the diagnosis that showed why, and our team proposed changes to the rig.</p>
+      </div>
+      <dl class="strip">
+        <div><dt>Status</dt><dd><span class="chip chip-done">Completed</span></dd></div>
+        <div><dt>Course</dt><dd>ME 331, Duke</dd></div>
+        <div><dt>Team</dt><dd>Three students</dd></div>
+        <div><dt>My part</dt><dd>Python analysis, misfire tests, intake adapter CAD</dd></div>
+      </dl>
+      <div class="pbody">
+        <div class="prose">
+          <figure class="feature"><img src="img/me331-rig.jpg" alt="The lab rig: an engine on a steel base plate, belted to an alternator, with a black flywheel and an orange intake hose" loading="lazy" width="1400" height="1050"><figcaption>The lab rig. A 3.5&nbsp;hp Briggs &amp; Stratton engine drives an alternator through a belt. An Optrand sensor in the cylinder head reads pressure, and a tachometer reads two reflective marks on the flywheel.</figcaption></figure>
+
+          <h2>The problem</h2>
+          <p>The lab gives you two signals: cylinder pressure and a tachometer pulse. From those you rebuild cylinder volume, plot the PV loop and compare it with an ideal Otto cycle. Our loops had no sharp pressure rise at top dead center, and the area inside them, which is the indicated work, was a fraction of the ideal.</p>
+          <div class="cmp" role="img" aria-label="Measured against the ideal Otto cycle, loaded run: peak pressure 111.6 psi against 389.5 psi, which is 29 percent; indicated work per cycle 19.4 joules against 163.6 joules, which is 12 percent.">
+            <div class="cmp-title"><span>Measured against the ideal Otto cycle</span><span>Loaded run</span></div>
+            <div class="cmp-rows">
+              <div class="cmp-row">
+                <span class="cmp-k">Peak pressure</span>
+                <div class="cmp-bars">
+                  <div class="cmp-bar ideal" style="--w:100%"><i></i><span>389.5 psi</span></div>
+                  <div class="cmp-bar meas" style="--w:28.7%"><i></i><span>111.6 psi · <b>29%</b></span></div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <span class="cmp-k">Indicated work per cycle</span>
+                <div class="cmp-bars">
+                  <div class="cmp-bar ideal" style="--w:100%"><i></i><span>163.6 J</span></div>
+                  <div class="cmp-bar meas" style="--w:11.9%"><i></i><span>19.4 J · <b>12%</b></span></div>
+                </div>
+              </div>
+            </div>
+            <div class="cmp-legend"><span><i class="lg-ideal"></i>Ideal Otto cycle</span><span><i class="lg-meas"></i>Measured</span></div>
+          </div>
+
+          <h2>From two signals to a PV loop</h2>
+          <ol class="steps">
+            <li><span>Found each combustion peak in the pressure trace with SciPy’s peak finder. The spacing gave 2,786&nbsp;rpm, within 0.3% of the tachometer’s 2,778&nbsp;rpm.</span></li>
+            <li><span>Converted time to crank angle, then to piston position with the slider-crank relation, then to cylinder volume using the bore and clearance volume.</span></li>
+            <li><span>Integrated pressure over volume around each cycle and averaged the cycles to get indicated work.</span></li>
+          </ol>
+          <div class="fig2">
+            <figure class="rfig"><img src="img/me331-pressure-time.png" alt="Plot of cylinder pressure against time with detected peaks marked in red" loading="lazy" width="432" height="288"><figcaption>Pressure trace with the detected peaks, loaded run.</figcaption></figure>
+            <figure class="rfig"><img src="img/me331-pv-otto.png" alt="Plot of every logged cycle in pressure-volume space against the ideal Otto cycle in red" loading="lazy" width="432" height="288"><figcaption>Every logged cycle against the ideal Otto cycle (red).</figcaption></figure>
+          </div>
+
+          <h2>Three tests, one answer</h2>
+          <p>A flat loop can come from bad combustion or from bad measurement, so we checked the combustion three separate ways.</p>
+          <ul class="tests">
+            <li>
+              <figure class="rfig"><img src="img/me331-pv-cycle.png" alt="Single-cycle PV loop that rises gradually and stays high into expansion" loading="lazy" width="432" height="288"></figure>
+              <div>
+                <h3>Shape against the ideal cycle</h3>
+                <p>There is no constant-volume pressure spike at top dead center. Pressure climbs slowly and stays high into the expansion stroke, which looks more like a Diesel cycle’s constant-pressure burn than an Otto cycle.</p>
+                <span class="result">No spike at TDC</span>
+              </div>
+            </li>
+            <li>
+              <figure class="rfig"><img src="img/me331-misfire-event.png" alt="Pressure against crank angle for one combustion event, with pressure at minus 40 and plus 40 degrees marked" loading="lazy" width="432" height="288"></figure>
+              <div>
+                <h3>Pressure-ratio misfire test</h3>
+                <p>Following a method from Cesario et al., we compared the pressure 40° after top dead center with the pressure 40° before it. A healthy burn keeps that ratio above 1. This event scored 0.58.</p>
+                <span class="result">0 of 12 events passed</span>
+              </div>
+            </li>
+            <li>
+              <figure class="rfig"><img src="img/me331-loglog.png" alt="Log-log pressure-volume plot with straight-line fits to compression and expansion" loading="lazy" width="432" height="288"></figure>
+              <div>
+                <h3>Polytropic exponents</h3>
+                <p>On log-log axes, compression and expansion should be straight lines with exponents near 1.3 to 1.4. Compression gave 1.06, close to isothermal, so the charge wasn’t heating as it should. Expansion gave 0.47: pressure fell more slowly than isentropic, as it would if fuel kept burning late into the stroke.</p>
+                <span class="result">n = 1.06 and 0.47</span>
+              </div>
+            </li>
+          </ul>
+
+          <h2>Likely causes</h2>
+          <ul>
+            <li><strong>Too little air.</strong> A partly open throttle or a closed choke makes the mixture rich and the burn incomplete. We saw dense exhaust and soot in the intake during testing.</li>
+            <li><strong>An aging sensor.</strong> The Optrand pressure sensor is rated for 1 to 3 years, and the rig has been in use for at least 7, so its calibration was in doubt too.</li>
+          </ul>
+
+          <h2>Redesigning the rig</h2>
+          <div class="split">
+            <div>
+              <p>The rig could only produce PV plots, so we proposed four additions:</p>
+              <ul>
+                <li>An intake manifold adapter, modeled in CAD, so the lab’s Omega flow meter can measure airflow again.</li>
+                <li>Fuel flow measured over a timed run, in place of a sight-glass reading.</li>
+                <li>A crank encoder, so volume comes from measured crank angle instead of timing between two tape marks.</li>
+                <li>A load cell on the alternator frame, with an adjustable field supply, to measure brake torque.</li>
+              </ul>
+              <p>We also wrote two new experiments for the course. One follows energy from fuel to indicated, brake and electrical power, with an entropy-generation estimate. The other sweeps the air-fuel ratio across throttle positions.</p>
+            </div>
+            <figure class="rfig"><img src="img/me331-intake-adapter.png" alt="CAD render of the intake adapter: a ribbed hose barb on a round body with two bolt tabs" loading="lazy" width="558" height="750"><figcaption>The intake manifold adapter in CAD.</figcaption></figure>
+          </div>
+
+          <h2>What I’d do differently</h2>
+          <ul>
+            <li>Set the choke and throttle before logging, and wait until peak pressure stops rising. The handout specified neither, and both of our runs suffered for it.</li>
+            <li>Check that the pressure sensor reads atmospheric with the engine stopped, before every run.</li>
+            <li>Measure crank angle directly rather than inferring it from cycle timing.</li>
+          </ul>
+          <p class="sub">Plots are from our team’s report, made in Python.</p>
+        </div>
+        <dl class="specs">
+          <div class="specs-title">Specifications</div>
+          <div><dt>Engine</dt><dd>Briggs &amp; Stratton 3.5 hp, single cylinder, four-stroke</dd></div>
+          <div><dt>Displacement</dt><dd>148 cc (9.0 in³)</dd></div>
+          <div><dt>Test speed</dt><dd>About 2,780 rpm</dd></div>
+          <div><dt>Sensors</dt><dd>Optrand in-cylinder pressure, flywheel tachometer</dd></div>
+          <div><dt>Analysis</dt><dd>Python (NumPy, SciPy, pandas, Matplotlib)</dd></div>
+          <div><dt>Finding</dt><dd>0 of 12 combustion events passed the misfire test</dd></div>
+        </dl>
+      </div>
+      <nav class="pnext" aria-label="Project navigation"><a class="textlink" href="#mclaren">Previous: Formula 1 ECU validation</a><a class="textlink" href="#crest">Next: Optimizing 3D printing for space</a></nav>
+    </section>
+
+    <!-- ============ CREST ============ -->
+    <section data-view="crest">
+      <div class="phead">
+        <a class="back" href="#projects">← All projects</a>
+        <p class="eyebrow">School project · CREST Gold Award · 2023–24</p>
+        <h1 class="ptitle">Optimizing 3D printing for use in space</h1>
+        <p class="lede">With a partner, I tested how 3D printer settings change a part’s strength per gram, with tools printed in orbit as the end use. We designed the samples, built our own test rigs and tested 30 print settings. The project earned a CREST Gold Award from the British Science Association.</p>
+      </div>
+      <dl class="strip">
+        <div><dt>Status</dt><dd><span class="chip chip-done">Completed</span></dd></div>
+        <div><dt>Award</dt><dd>CREST Gold</dd></div>
+        <div><dt>Team</dt><dd>Two people</dd></div>
+        <div><dt>Time</dt><dd>90+ hours</dd></div>
+      </dl>
+      <div class="pbody">
+        <div class="prose">
+          <figure class="feature"><img src="img/crest-charpy.jpg" alt="Hand-built Charpy impact tester: a wooden frame with a pendulum arm and a printed angle scale" loading="lazy" width="825" height="1100"><figcaption>The Charpy impact tester we built. Impact energy came from how high the pendulum swung after breaking a sample.</figcaption></figure>
+          <h2>The problem</h2>
+          <p>Every spare tool sent to space costs launch mass. Printing tools in orbit means carrying only raw material, but only if the printed parts are strong enough. NASA has been 3D printing in orbit since 2014, with parts close in strength to the same parts printed on the ground.</p>
+          <h2>What we did</h2>
+          <ul>
+            <li>Picked the loads a hand tool sees: torsion (a wrench), bending (a lever) and impact (a hammer).</li>
+            <li>Tested 30 settings across 7 variables, one variable at a time: infill type, infill density, layer height, print temperature, line width, number of walls and orientation. Testing every combination would have meant millions of samples.</li>
+            <li>Printed in PLA+ rather than ABS, which gives off toxic fumes when melted.</li>
+            <li>Designed the samples in CAD, reworked the torsion sample until it broke cleanly in the middle every time, and notched the impact sample so it broke in the same place.</li>
+            <li>Switched from a 3-point to a cantilever bend test, because we couldn’t apply enough force by hand to break samples in 3-point bending.</li>
+            <li>Filmed every test in slow motion and read breaking angles against a protractor, timing fractures to the nearest 0.004&nbsp;s.</li>
+            <li>Stored samples with silica gel, since damp PLA turns brittle and would have made early prints weaker than late ones.</li>
+          </ul>
+          <h2>Findings</h2>
+          <ul>
+            <li>Layer orientation alone nearly doubled impact energy, from 3.2&nbsp;J to 6.3&nbsp;J, when the layers ran perpendicular to the strike.</li>
+            <li>Two walls gave the best strength per gram in torsion and impact. Extra walls added mass faster than strength.</li>
+            <li>Raising print temperature from 190&nbsp;°C to 220&nbsp;°C tripled the torsion breaking angle, from 7° to 22°. Impact energy fell as temperature rose, from 6.3&nbsp;J at 190&nbsp;°C to 2.0&nbsp;J at 230&nbsp;°C, and bending didn’t change.</li>
+            <li>Above about 50% infill, more infill added mass without much gain in impact strength per gram.</li>
+          </ul>
+          <h2>Explore the results</h2>
+          <p>Every setting we tested, from our data tables. Pick a setting and a load. A higher breaking angle means a stronger sample, and the best result in each view is shown in orange.</p>
+          <div class="explorer" id="explorer">
+            <div class="ex-head"><span>Results explorer</span><span>One sample per setting</span></div>
+            <div class="ex-controls">
+              <div class="seg-group" role="group" aria-label="Setting">
+                <span class="seg-label">Setting</span>
+                <button type="button" class="seg" id="ex-v-type" data-v="type" aria-pressed="false">Infill type</button>
+                <button type="button" class="seg" id="ex-v-density" data-v="density" aria-pressed="false">Infill density</button>
+                <button type="button" class="seg" id="ex-v-layer" data-v="layer" aria-pressed="false">Layer height</button>
+                <button type="button" class="seg" id="ex-v-temp" data-v="temp" aria-pressed="true">Print temperature</button>
+                <button type="button" class="seg" id="ex-v-line" data-v="line" aria-pressed="false">Line width</button>
+                <button type="button" class="seg" id="ex-v-walls" data-v="walls" aria-pressed="false">Walls</button>
+                <button type="button" class="seg" id="ex-v-orient" data-v="orient" aria-pressed="false">Orientation</button>
+              </div>
+              <div class="seg-group" role="group" aria-label="Load">
+                <span class="seg-label">Load</span>
+                <button type="button" class="seg" id="ex-t-torsion" data-t="torsion" aria-pressed="true">Torsion</button>
+                <button type="button" class="seg" id="ex-t-bending" data-t="bending" aria-pressed="false">Bending</button>
+                <button type="button" class="seg" id="ex-t-impact" data-t="impact" aria-pressed="false">Impact</button>
+                <label class="switch" for="ex-perg"><input type="checkbox" id="ex-perg"> Per gram</label>
+              </div>
+            </div>
+            <div class="ex-chart" id="ex-svgbox"></div>
+            <p class="ex-note" id="ex-note" aria-live="polite">Torsion peaked at 220&nbsp;°C. Impact energy fell as temperature rose, the opposite of our prediction. Bending barely changed.</p>
+          </div>
+          <p class="sub">Torsion and bending were compared by breaking angle rather than force, so they rank settings rather than give absolute strengths.</p>
+          <h2>What I’d do differently</h2>
+          <ul>
+            <li>Repeat every measurement. Without repeats we couldn’t tell a real trend from an anomaly.</li>
+            <li>Record how each sample failed. A tool that bends before it breaks warns the user; one that snaps doesn’t.</li>
+            <li>Measure force as well as angle, test a third orientation, and test real tool shapes alongside standard samples.</li>
+          </ul>
+          <p>The next step we proposed was slicing software that picks print settings from a part’s expected loads and the material available.</p>
+          <h2>Gallery</h2>
+          <div class="gallery">
+            <figure class="ph"><img src="img/crest-infill.jpg" alt="Four printed samples cut open to show different internal infill patterns" loading="lazy"><figcaption>Four of the infill patterns we tested.</figcaption></figure>
+            <figure class="ph"><img src="img/crest-torsion-prototypes.jpg" alt="Three early torsion samples broken in different places" loading="lazy"><figcaption>Early torsion samples broke across several layers in different places, so we redesigned the sample.</figcaption></figure>
+            <figure class="ph"><img src="img/crest-impact-sample.jpg" alt="CAD model of the notched impact sample" loading="lazy"><figcaption>The impact sample in CAD, notched opposite the strike so it breaks in the middle.</figcaption></figure>
+            <figure class="ph"><img src="img/crest-orientation.jpg" alt="An impact sample broken into two pieces with a rough fracture surface" loading="lazy"><figcaption>With layers perpendicular to the strike, the fracture surface was larger and the sample took nearly twice the energy to break.</figcaption></figure>
+          </div>
+        </div>
+        <dl class="specs">
+          <div class="specs-title">Specifications</div>
+          <div><dt>Material</dt><dd>PLA+</dd></div>
+          <div><dt>Variables</dt><dd>7</dd></div>
+          <div><dt>Settings tested</dt><dd>30</dd></div>
+          <div><dt>Tests</dt><dd>Torsion, cantilever bend, Charpy impact</dd></div>
+          <div><dt>Measurement</dt><dd>Breaking angles from slow-motion video</dd></div>
+          <div><dt>Award</dt><dd>CREST Gold, British Science Association</dd></div>
+        </dl>
+      </div>
+      <nav class="pnext" aria-label="Project navigation"><a class="textlink" href="#misfire">Previous: Engine misfire diagnosis</a><a class="textlink" href="#fsae">Next: Formula SAE powertrain</a></nav>
+    </section>
+
+    <!-- ============ FSAE ============ -->
+    <section data-view="fsae">
+      <div class="phead">
+        <a class="back" href="#projects">← All projects</a>
+        <p class="eyebrow">Team · Duke Motorsports (Formula SAE) · Sep 2024 to now</p>
+        <h1 class="ptitle">Formula SAE powertrain</h1>
+        <p class="lede">I’m a powertrain engineer on Duke’s Formula SAE team.</p>
+      </div>
+      <dl class="strip">
+        <div><dt>Status</dt><dd><span class="chip chip-live">Ongoing</span></dd></div>
+        <div><dt>Role</dt><dd>Powertrain Engineer</dd></div>
+        <div><dt>Team</dt><dd>Duke Motorsports</dd></div>
+        <div><dt>Since</dt><dd>Sep 2024</dd></div>
+      </dl>
+      <div class="pbody">
+        <div class="prose">
+          <figure class="feature cover"><img src="img/fsae-car.jpg" alt="Duke Motorsports Formula SAE car, number 34, in the team garage" loading="lazy" width="1200" height="900"><figcaption>The team’s car, number 34, in the garage.</figcaption></figure>
+          <h2>What I do</h2>
+          <ul>
+            <li>Calibrate the engine and configure the drivetrain to improve powertrain performance.</li>
+            <li>Integrate powertrain components with the chassis and electrical sub-teams ahead of competition.</li>
+          </ul>
+          <p class="todo"><span class="todo-tag">To add</span>One result: a part you designed, a calibration change and its effect, or dyno or test hours.</p>
+          <h2>On the stands</h2>
+          <figure class="vfig" style="max-width:380px">
+            <div class="vbox">
+              <video id="v-fsae" data-loop poster="media/engine-run-poster.jpg" muted loop playsinline preload="none" width="720" height="900" aria-label="Duke Motorsports car on jack stands with its engine running"><source src="media/engine-run.mp4" type="video/mp4"><source src="media/engine-run.webm" type="video/webm"></video>
+              <div class="vctl">
+                <button type="button" class="vbtn" data-play="v-fsae" aria-pressed="true"><span class="lbl">Pause</span></button>
+                <button type="button" class="vbtn" data-sound="v-fsae" aria-pressed="false"><span class="lbl">Sound on</span></button>
+              </div>
+            </div>
+            <figcaption><span>Engine running with the car on jack stands, April 2025.</span></figcaption>
+          </figure>
+          <h2>Next</h2>
+          <p><span class="chip chip-plan">Planned</span> Spring 2027: design, make and inspect one powertrain part, with a GD&amp;T drawing to ASME Y14.5 and a first-article inspection.</p>
+          <p class="todo"><span class="todo-tag">To add</span>A calibration map or dyno plot, once the team is happy to share it.</p>
+        </div>
+        <dl class="specs">
+          <div class="specs-title">Specifications</div>
+          <div><dt>Sub-team</dt><dd>Powertrain</dd></div>
+          <div><dt>Work</dt><dd>Engine calibration, drivetrain setup, integration</dd></div>
+          <div><dt>Works with</dt><dd>Chassis and electrical sub-teams</dd></div>
+          <div><dt>Car</dt><dd>#34</dd></div>
+        </dl>
+      </div>
+      <nav class="pnext" aria-label="Project navigation"><a class="textlink" href="#crest">Previous: Optimizing 3D printing for space</a><a class="textlink" href="#builds">Next: Build queue</a></nav>
+    </section>
+
+    <!-- ============ BUILD QUEUE ============ -->
+    <section data-view="builds">
+      <div class="phead">
+        <a class="back" href="#projects">← All projects</a>
+        <p class="eyebrow">Planned work · Oct 2026 to spring 2027</p>
+        <h1 class="ptitle">Build queue</h1>
+        <p class="lede">Builds I’m planning over the next few months. Most of them test a prediction against a measurement. Each one moves to Projects once it exists.</p>
+      </div>
+      <ol class="builds">
+        <li class="build">
+          <div>
+            <span class="chip chip-plan">Planned · Sydney, Oct–Dec 2026</span>
+            <h3>Rack-in-a-box cooling rig</h3>
+            <p>A small enclosure with a heater block standing in for a server, two PC fans under PID control and a few thermocouples. I’ll predict the temperatures by hand and in CFD first, then measure. A desk-scale version of the problem I worked on at ADAG.</p>
+          </div>
+          <dl><div><dt>Measures</dt><dd>Inlet and outlet temperature, fan speed, heater power</dd></div><div><dt>Shows</dt><dd>Instrumentation, PID control, model validation</dd></div></dl>
+        </li>
+        <li class="build">
+          <div>
+            <span class="chip chip-plan">Planned · with the CSWA</span>
+            <h3>Strain-gauge beam against FEA</h3>
+            <p>An aluminum cantilever with a strain gauge and bridge amplifier, loaded with known weights and compared with hand calculations and SolidWorks Simulation.</p>
+          </div>
+          <dl><div><dt>Measures</dt><dd>Strain and deflection against load</dd></div><div><dt>Shows</dt><dd>CAD, FEA, strain measurement</dd></div></dl>
+        </li>
+        <li class="build">
+          <div>
+            <span class="chip chip-plan">Planned</span>
+            <h3>Servo gripper with force sensing</h3>
+            <p>A two-finger gripper that closes until it reaches a set force, with a force sensor in the control loop.</p>
+          </div>
+          <dl><div><dt>Measures</dt><dd>Grip force, response time</dd></div><div><dt>Shows</dt><dd>Mechanism design, closed-loop control</dd></div></dl>
+        </li>
+        <li class="build">
+          <div>
+            <span class="chip">Idea</span>
+            <h3>Propeller thrust stand</h3>
+            <p>A load cell, current sensor and tachometer for small drone motors, to compare measured thrust and efficiency with momentum theory.</p>
+          </div>
+          <dl><div><dt>Measures</dt><dd>Thrust, electrical power, RPM</dd></div><div><dt>Shows</dt><dd>Propulsion testing, DAQ</dd></div></dl>
+        </li>
+        <li class="build">
+          <div>
+            <span class="chip chip-plan">Planned · Duke, spring 2027</span>
+            <h3>Formula SAE part, drawn and inspected</h3>
+            <p>One powertrain part designed, drawn to ASME Y14.5, made and inspected, as an independent study.</p>
+          </div>
+          <dl><div><dt>Measures</dt><dd>As-built dimensions against the drawing</dd></div><div><dt>Shows</dt><dd>GD&amp;T, manufacturing, inspection</dd></div></dl>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section data-view="about">
+      <div class="phead">
+        <p class="eyebrow">About</p>
+        <h1 class="ptitle">Cole Matthews</h1>
+      </div>
+      <div class="pbody">
+        <div class="about">
+          <p>I’m a mechanical engineering student at Duke University, graduating in May 2028 with a certificate in aerospace engineering. I went to school in London, and I’m spending this autumn at UNSW in Sydney.</p>
+          <p>I’m most interested in hardware: aircraft, propulsion, and the thermal and electrical systems around them. My two internships came at that from different ends. At McLaren Applied I tested the electronics that run Formula&nbsp;1 engines. At ADAG Group I modeled how a data-center campus gets rid of its heat.</p>
+          <p>I’m training for my private pilot’s license and hold a UK CAA drone license. I’m a student affiliate of the Royal Aeronautical Society and a member of the Vertical Flight Society.</p>
+          <p>At school, a partner and I earned a CREST Gold Award from the British Science Association for testing 3D-printed parts for use in space. Before university I also founded Simplexity, a student wellbeing platform used by two London schools. It won £10,000 in start-up funding in the Transform Your Society competition.</p>
+          <p>Outside engineering: skiing, Chelsea, travel and trying new food.</p>
+        </div>
+        <dl class="specs">
+          <div class="specs-title">Contact</div>
+          <div><dt>Email</dt><dd class="copyline"><span id="email-about">Cole.Matthews@duke.edu</span><button type="button" class="copy" data-copy="Cole.Matthews@duke.edu" aria-controls="email-about">Copy</button></dd></div>
+          <div><dt>Based</dt><dd>Durham, NC and London</dd></div>
+          <div><dt>Recognition</dt><dd>CREST Gold Award (2024); Senior British Physics Olympiad Silver Medal (2023); Ivy House Leadership Development Award (2023); Lord Mayor’s Prize for GCSE results (2022)</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============ RESUME ============ -->
+    <section data-view="resume">
+      <div class="phead">
+        <p class="eyebrow">Resume · PDF on request</p>
+        <h1 class="ptitle">Resume</h1>
+      </div>
+      <div class="cv prose" style="max-width:none">
+        <h2>Education</h2>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>Duke University, Durham, NC</strong><span class="xp-date">Expected May 2028</span></div>
+          <div class="cv-role">B.S.E. Mechanical Engineering, Aerospace Engineering Certificate</div>
+          <ul><li><strong>Coursework:</strong> Thermodynamics, Dynamics, Mechatronics, Differential Equations; Controls (Spring 2027).</li>
+              <li><strong>Labs:</strong> engine cycle analysis (Brayton, dual cycle), spring-pendulum dynamics, op-amp filter design, DAQ instrumentation.</li>
+              <li><strong>Study abroad:</strong> UNSW Sydney, Aug–Dec 2026.</li></ul>
+        </div>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>City of London School, London</strong><span class="xp-date">2019–2024</span></div>
+          <div class="cv-role">A-Levels: Mathematics (A*), Further Mathematics (A), Physics (A*), Economics (A*)</div>
+          <ul><li><strong>GCSEs:</strong> 10 at grade 9/A*; Lord Mayor’s Prize for GCSE results (2022).</li></ul>
+        </div>
+
+        <h2>Experience</h2>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>ADAG Group, Montreal</strong><span class="xp-date">Jun–Jul 2026</span></div>
+          <div class="cv-role">CFD &amp; Design Intern</div>
+          <ul><li>Learned Cadence Reality DC (data-center CFD software) from scratch, then built and solved full thermal and airflow models for a 160&nbsp;MW AI data-center campus.</li>
+              <li>Ran a three-tier CFD fidelity study of a 600&nbsp;kW cooling unit, setting ±5% tolerances to find the lowest-cost model that reproduced the high-fidelity result.</li>
+              <li>Modeled a rear-door heat exchanger for GPU racks at ~50&nbsp;kW/rack, trading heat rejection against air-side pressure drop.</li></ul>
+        </div>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>McLaren Applied (now Motion Applied), Woking</strong><span class="xp-date">May–Jul 2025</span></div>
+          <div class="cv-role">Motorsport Intern, Systems Engineering (selected as the firm’s sole intern)</div>
+          <ul><li>Built ECU validation workflows for the TAG-700, the standard ECU on every 2026 Formula&nbsp;1 car; calibrated lambda sensors on a Bosch emulator.</li>
+              <li>Wrote 12+ TAG-700 and PCU-700 test cases across multiple vehicle programs: fault detection, UI, voltage and timekeeping.</li>
+              <li>Configured high-frequency telemetry in ATLAS for performance diagnostics.</li>
+              <li>Helped build an early version of Human-in-the-Loop, a briefcase-sized trackside ECU diagnostics rig, using PEAK PCAN, System Monitor and Control Panel.</li></ul>
+        </div>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>Duke Motorsports (Formula SAE), Durham</strong><span class="xp-date">Sep 2024–now</span></div>
+          <div class="cv-role">Powertrain Engineer</div>
+          <ul><li>Calibrate the engine and configure the drivetrain to improve powertrain performance.</li>
+              <li>Integrate powertrain components with the chassis and electrical sub-teams ahead of competition.</li></ul>
+        </div>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>BAE Systems Submarines, Barrow-in-Furness</strong><span class="xp-date">Oct 2023</span></div>
+          <div class="cv-role">Engineering Intern</div>
+          <ul><li>Observed engineering and manufacturing on the UK’s Dreadnought and Astute-class nuclear submarine programs.</li></ul>
+        </div>
+
+        <h2>Selected projects</h2>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>Engine Misfire Diagnosis from In-Cylinder Pressure Data</strong><span class="xp-date">Spring 2026</span></div>
+          <ul><li>In a team engine lab, wrote the Python crank-angle reconstruction and PV-loop integration for in-cylinder pressure data.</li>
+              <li>Ran three misfire tests that traced the flat PV loop to incomplete combustion; 0 of 12 cycles passed.</li></ul>
+        </div>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>Optimizing 3D Printing for Use in Space (CREST Gold Award, British Science Association)</strong><span class="xp-date">2023–2024</span></div>
+          <ul><li>With a partner, tested 30 3D printer settings across 7 variables in torsion, bending and impact (90+ hours).</li>
+              <li>Built a hand-made Charpy impact tester; measured impact energy nearly doubling (3.2 to 6.3 J) with layer orientation.</li></ul>
+        </div>
+        <div class="cv-entry">
+          <div class="cv-line"><strong>Simplexity, founder</strong><span class="xp-date">2022–now</span></div>
+          <ul><li>Built the website and platform for a wellbeing service used by two London schools, designed around surveys of 300+ students.</li>
+              <li>Won £10,000 in start-up funding in the Transform Your Society competition.</li></ul>
+        </div>
+
+        <h2>Skills and recognition</h2>
+        <div class="cv-entry">
+          <ul><li><strong>Engineering:</strong> CFD (Cadence Reality DC), thermal modeling, CAD (SolidWorks, Onshape), FDM 3D printing, materials testing, ECU validation, engine calibration, CAN bus (PEAK PCAN), ATLAS telemetry, DAQ.</li>
+              <li><strong>Software:</strong> Python (signal processing, data analysis), MATLAB.</li>
+              <li><strong>Aviation:</strong> Private pilot’s license in training; UK CAA drone license.</li>
+              <li><strong>Recognition:</strong> CREST Gold Award (2024); Senior British Physics Olympiad Silver Medal (2023); Ivy House Leadership Development Award (2023).</li>
+              <li><strong>Memberships:</strong> Royal Aeronautical Society (Student Affiliate); Vertical Flight Society.</li></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Cole.Matthews@duke.edu · Durham, NC and London</span>
+    <span>Updated October 2026</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var VIEWS = ["home", "adag", "mclaren", "misfire", "crest", "fsae", "builds", "about", "resume"];
+  var PROJECT_VIEWS = ["adag", "mclaren", "misfire", "crest", "fsae", "builds"];
+  var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  /* ---------- Video loops ---------- */
+  var videos = Array.prototype.slice.call(document.querySelectorAll("video[data-loop]"));
+  function setPlayLabel(v) {
+    var b = document.querySelector('[data-play="' + v.id + '"]');
+    if (!b) return;
+    var playing = !v.paused;
+    b.setAttribute("aria-pressed", String(playing));
+    b.querySelector(".lbl").textContent = playing ? "Pause" : "Play";
+  }
+  function playVideo(v) {
+    var p = v.play();
+    if (p && typeof p.then === "function") p.then(function () { setPlayLabel(v); }, function () { setPlayLabel(v); });
+    else setPlayLabel(v);
+  }
+  function syncVideos() {
+    var view = root.getAttribute("data-view");
+    videos.forEach(function (v) {
+      var sec = v.closest("[data-view]");
+      var visible = sec && sec.getAttribute("data-view") === view;
+      if (visible && !reduceMotion && v.getAttribute("data-user-paused") !== "1") playVideo(v);
+      else { v.pause(); setPlayLabel(v); }
+    });
+  }
+  videos.forEach(function (v) {
+    v.addEventListener("play", function () { setPlayLabel(v); });
+    v.addEventListener("pause", function () { setPlayLabel(v); });
+  });
+  document.querySelectorAll("[data-play]").forEach(function (b) {
+    var v = document.getElementById(b.getAttribute("data-play"));
+    b.addEventListener("click", function () {
+      if (v.paused) { v.removeAttribute("data-user-paused"); playVideo(v); }
+      else { v.setAttribute("data-user-paused", "1"); v.pause(); }
+    });
+  });
+  document.querySelectorAll("[data-sound]").forEach(function (b) {
+    var v = document.getElementById(b.getAttribute("data-sound"));
+    b.addEventListener("click", function () {
+      v.muted = !v.muted;
+      if (!v.muted && v.paused) { v.removeAttribute("data-user-paused"); playVideo(v); }
+      b.setAttribute("aria-pressed", String(!v.muted));
+      b.querySelector(".lbl").textContent = v.muted ? "Sound on" : "Sound off";
+    });
+  });
+
+  /* ---------- CREST results explorer ---------- */
+  var DATA = {
+    type:    { name: "infill type", labels: ["Grid", "Triangles", "Cubic", "Gyroid", "Lightning"], mass: [17, 17, 17, 17, 14],
+               torsion: [28, 19, 13, 10, 9], bending: [20, 15, 22, 27, 16], impact: [3.23, 4.38, 3.82, 3.82, 1.98],
+               note: "No pattern won every test. Lightning, the lightest, was the weakest in torsion and impact." },
+    density: { name: "infill density", labels: ["10%", "30%", "50%", "70%", "90%"], mass: [15, 19, 24, 28, 32],
+               torsion: [8, 9.5, 15, 19.5, 22], bending: [20, 22, 25, 22, 20], impact: [0.66, 2.61, 4.38, 5.41, 6.26],
+               note: "Torsion rose steadily with density and bending barely moved. Impact energy per gram leveled off above about 50%." },
+    layer:   { name: "layer height", labels: ["0.1 mm", "0.2 mm", "0.3 mm", "0.4 mm"], mass: [16, 17, 19, 20],
+               torsion: [18, 17.5, 16, 15], bending: [15, 20, 25, 27], impact: [3.23, 1.98, 1.32, 3.23],
+               note: "Bending angle rose with layer height, and impact energy fell to a low at 0.3 mm. The 0.4 mm impact result looks like an anomaly." },
+    temp:    { name: "print temperature", labels: ["190 °C", "200 °C", "210 °C", "220 °C", "230 °C"], mass: [17, 17, 17, 17, 17],
+               torsion: [7, 12.5, 16, 22, 17], bending: [25, 30, 30, 30, 29], impact: [6.26, 5.41, 4.38, 3.23, 1.98],
+               note: "Torsion peaked at 220 °C. Impact energy fell as temperature rose, the opposite of our prediction. Bending barely changed." },
+    line:    { name: "line width", labels: ["0.24 mm", "0.34 mm", "0.44 mm", "0.54 mm", "0.64 mm"], mass: [17, 16, 17, 19, 20],
+               torsion: [8, 5, 18, 11, 30], bending: [25, 29, 32, 34, 35], impact: [3.23, 1.98, 2.61, 3.82, 4.38],
+               note: "Bending rose with line width, and bending per gram peaked at 0.44 mm. The torsion and impact trends were weak." },
+    walls:   { name: "number of walls", labels: ["1 wall", "2 walls", "3 walls", "4 walls"], mass: [14, 15, 17, 19],
+               torsion: [11, 19, 21, 22], bending: [30, 26, 36, 23], impact: [1.32, 4.91, 5.41, 5.86],
+               note: "Per gram, torsion and impact strength both peaked at two walls. Extra walls added mass faster than strength." },
+    orient:  { name: "orientation", labels: ["Layers parallel", "Layers perpendicular"], mass: [17, 19],
+               torsion: [15, 23], bending: [20, 19], impact: [3.23, 6.26],
+               note: "Layers perpendicular to the load nearly doubled impact energy, from 3.2 J to 6.3 J, and raised the torsion angle from 15° to 23°." }
+  };
+  var TESTS = {
+    torsion: { name: "Torsion", axis: "Breaking angle", unit: "°", per: "°/g" },
+    bending: { name: "Bending", axis: "Breaking angle", unit: "°", per: "°/g" },
+    impact:  { name: "Impact", axis: "Energy to break", unit: "J", per: "J/g" }
+  };
+  var state = { v: "temp", t: "torsion", perg: false };
+  var svgBox = document.getElementById("ex-svgbox");
+  var noteEl = document.getElementById("ex-note");
+  var pergEl = document.getElementById("ex-perg");
+
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function niceStep(max, count) {
+    var raw = max / count, p = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10)), f = raw / p;
+    var s = f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10;
+    return s * p;
+  }
+  function fmtTick(v) { return String(parseFloat(v.toFixed(3))); }
+  function fmtVal(v) {
+    if (state.perg) return state.t === "impact" ? v.toFixed(3) : v.toFixed(2);
+    if (state.t === "impact") return v.toFixed(2);
+    return v % 1 ? v.toFixed(1) : String(v);
+  }
+  function catLines(label, slot) {
+    if (label.length * 6.6 <= slot - 6 || label.indexOf(" ") < 0) return [label];
+    var i = label.indexOf(" ");
+    return [label.slice(0, i), label.slice(i + 1)];
+  }
+  function renderChart() {
+    if (!svgBox) return;
+    var V = DATA[state.v], T = TESTS[state.t];
+    var vals = V[state.t].map(function (x, i) { return state.perg ? x / V.mass[i] : x; });
+    var W = Math.max(300, Math.round(svgBox.clientWidth || 640));
+    var H = W < 520 ? 250 : 290;
+    var m = { l: 44, r: 10, t: 30, b: 60 };
+    var maxV = Math.max.apply(null, vals);
+    var step = niceStep(maxV, 4), top = Math.ceil(maxV / step - 1e-9) * step;
+    var ph = H - m.t - m.b, pw = W - m.l - m.r;
+    var y = function (v) { return m.t + ph - (v / top) * ph; };
+    var n = vals.length, slot = pw / n, bw = Math.min(64, slot * 0.56);
+    var best = vals.indexOf(maxV);
+    var unit = state.perg ? T.per : T.unit;
+    var out = [];
+    out.push('<svg viewBox="0 0 ' + W + " " + H + '" width="' + W + '" height="' + H + '" role="img" aria-labelledby="ex-title">');
+    var desc = T.name + " " + (state.perg ? "strength per gram" : T.axis.toLowerCase()) + " by " + V.name + ": " +
+      V.labels.map(function (l, i) { return l + " " + fmtVal(vals[i]) + " " + unit; }).join(", ") + ". Highest: " + V.labels[best] + ".";
+    out.push('<title id="ex-title">' + esc(desc) + "</title>");
+    out.push('<text class="c-ytitle" x="' + m.l + '" y="14">' + esc((state.perg ? T.axis + " per gram" : T.axis).toUpperCase()) + " (" + esc(unit) + ")</text>");
+    for (var g = 0; g <= top + 1e-9; g += step) {
+      var gy = y(g).toFixed(1);
+      out.push('<line class="c-grid" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + gy + '" y2="' + gy + '"/>');
+      out.push('<text class="c-tick" x="' + (m.l - 6) + '" y="' + (+gy + 3.5) + '" text-anchor="end">' + fmtTick(g) + "</text>");
+    }
+    vals.forEach(function (v, i) {
+      var cx = m.l + slot * i + slot / 2, by = y(v), h = m.t + ph - by;
+      out.push('<rect class="c-bar' + (i === best ? " best" : "") + '" x="' + (cx - bw / 2).toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + Math.max(0, h).toFixed(1) + '"/>');
+      out.push('<text class="c-val" x="' + cx.toFixed(1) + '" y="' + (by - 6).toFixed(1) + '" text-anchor="middle">' + fmtVal(v) + "</text>");
+      var lines = catLines(V.labels[i], slot), ly = m.t + ph + 17;
+      lines.forEach(function (ln, k) {
+        out.push('<text class="c-cat" x="' + cx.toFixed(1) + '" y="' + (ly + k * 14) + '" text-anchor="middle">' + esc(ln) + "</text>");
+      });
+      out.push('<text class="c-mass" x="' + cx.toFixed(1) + '" y="' + (ly + lines.length * 14 + 2) + '" text-anchor="middle">' + V.mass[i] + " g</text>");
+    });
+    out.push('<line class="c-axis" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + (m.t + ph) + '" y2="' + (m.t + ph) + '"/>');
+    out.push("</svg>");
+    svgBox.innerHTML = out.join("");
+    noteEl.textContent = V.note;
+  }
+  function setPressed(attr, val) {
+    document.querySelectorAll("[" + attr + "]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute(attr) === val)); });
+  }
+  document.querySelectorAll("[data-v]").forEach(function (b) {
+    b.addEventListener("click", function () { state.v = b.getAttribute("data-v"); setPressed("data-v", state.v); renderChart(); });
+  });
+  document.querySelectorAll("[data-t]").forEach(function (b) {
+    b.addEventListener("click", function () { state.t = b.getAttribute("data-t"); setPressed("data-t", state.t); renderChart(); });
+  });
+  if (pergEl) pergEl.addEventListener("change", function () { state.perg = pergEl.checked; renderChart(); });
+  var resizeQueued = false;
+  window.addEventListener("resize", function () {
+    if (resizeQueued) return;
+    resizeQueued = true;
+    requestAnimationFrame(function () { resizeQueued = false; if (root.getAttribute("data-view") === "crest") renderChart(); });
+  });
+
+  /* ---------- Routing ---------- */
+  function route() {
+    var id = (location.hash || "").slice(1);
+    var view = VIEWS.indexOf(id) > -1 ? id : "home";
+    var prev = root.getAttribute("data-view");
+    root.setAttribute("data-view", view);
+    var navKey = view === "home" && id === "projects" ? "projects" : (PROJECT_VIEWS.indexOf(view) > -1 ? "projects" : view);
+    document.querySelectorAll("[data-nav]").forEach(function (a) {
+      if (a.getAttribute("data-nav") === navKey) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+    syncVideos();
+    if (view === "crest") renderChart();
+    if (view === "home" && id && id !== "home") {
+      var el = document.getElementById(id);
+      if (el) { el.scrollIntoView(); return; }
+    }
+    if (prev !== view || id === "home") window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  route();
+  if (root.getAttribute("data-view") !== "crest") renderChart();
+
+  /* ---------- Theme and copy ---------- */
+  document.getElementById("theme-toggle").addEventListener("click", function () {
+    var cur = root.getAttribute("data-theme");
+    var dark = cur ? cur === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = dark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("cm.theme", next); } catch (e) {}
+  });
+
+  document.querySelectorAll("[data-copy]").forEach(function (b) {
+    var label = b.textContent;
+    b.addEventListener("click", function () {
+      function done(msg) { b.textContent = msg; setTimeout(function () { b.textContent = label; }, 1600); }
+      function fallback() {
+        var t = document.getElementById(b.getAttribute("aria-controls"));
+        if (t) { var r = document.createRange(); r.selectNodeContents(t); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+        done("Selected");
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function () { done("Copied"); }, fallback);
+      } else { fallback(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
